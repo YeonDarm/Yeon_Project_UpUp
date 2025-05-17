@@ -19,27 +19,22 @@ public class CharacterManager : MonoBehaviour
     public Player _player;
     public Player Player
     {
-        get
-        {
+        get {
             return _player;
         }
-        set
-        {
+        set {
             _player = value;
         }
     }
 
     private void Awake()
     {
-        if (_instance == null)
-        {
+        if (_instance == null) {
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
-        {
-            if (_instance == this)
-            {
+        else {
+            if (_instance == this) {
                 Destroy(gameObject);
             }
         }

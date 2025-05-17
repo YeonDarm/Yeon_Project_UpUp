@@ -282,7 +282,7 @@ CapsuleCollider:
   m_Radius: 0.25
   m_Height: 1.7
   m_Direction: 1
-  m_Center: {x: 0, y: 0.85, z: 0}
+  m_Center: {x: 0, y: 0.45, z: 0}
 --- !u!4 &410821026
 Transform:
   m_ObjectHideFlags: 0
@@ -292,7 +292,7 @@ Transform:
   m_GameObject: {fileID: 410821023}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.73, y: 0.09, z: 0}
+  m_LocalPosition: {x: 9.73, y: 0.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -311,6 +311,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a532a3d3aa34a40a648c9e4536a0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 5
+  cameraContainer: {fileID: 249825256}
+  minXLook: -85
+  maxXLook: 85
+  lookSensitivity: 0.1
 --- !u!114 &410821028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,11 +359,35 @@ MonoBehaviour:
     m_ActionId: 3df898ad-b056-4230-9fea-639709d7165f
     m_ActionName: PlayerAction/Move
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 410821027}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 7b80757e-596d-4071-a4a9-57545a6c4d10
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 410821027}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnLook
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: ade1bba3-4d35-40ce-9ced-cdcf17531d8b
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
@@ -562,7 +591,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -206,6 +206,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1336161844798844245, guid: 302f9270c40ea514c921b423eea7347c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6684317490783831274, guid: 302f9270c40ea514c921b423eea7347c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -427,7 +431,7 @@ CapsuleCollider:
   m_Radius: 0.25
   m_Height: 1.7
   m_Direction: 1
-  m_Center: {x: 0, y: 0.45, z: 0}
+  m_Center: {x: 0, y: 0.69, z: 0}
 --- !u!4 &410821026
 Transform:
   m_ObjectHideFlags: 0
@@ -460,9 +464,10 @@ MonoBehaviour:
   useStamina: 10
   jumpPower: 80
   maxJumpPower: 200
+  fallingSpeed: 0
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 256
   cameraContainer: {fileID: 249825256}
   minXLook: -85
   maxXLook: 85
@@ -1717,7 +1722,7 @@ GameObject:
   - component: {fileID: 1570000529}
   - component: {fileID: 1570000533}
   - component: {fileID: 1570000532}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: JumpPlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1822,7 +1827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc20027243d64bd47804d66a2678b974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpPower: 300
+  jumpPlatePower: 300
+  player: {fileID: 410821027}
 --- !u!54 &1570000533
 Rigidbody:
   m_ObjectHideFlags: 0

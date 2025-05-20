@@ -7,8 +7,11 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpPower;
     [SerializeField] private float useStamina;
+    [SerializeField] private float jumpPower = 80f;
+    [SerializeField] private float maxJumpPower = 80f;
+    private bool isCharging = false;
+    
     private Vector2 curMovementInput;
     private Rigidbody _rigidbody;
     public LayerMask groundLayerMask;
@@ -32,9 +35,16 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; //커서를 보이지 않기 위한 코드.    
     }
 
+
     void FixedUpdate() //물리연산, 움직임을 호출하는 경우
     {
         Move();
+        if (isCharging)
+        {
+            maxJumpPower += Time.deltaTime * 100f;
+            maxJumpPower = Mathf.Clamp(maxJumpPower, 0f, 200f);
+            jumpPower = maxJumpPower;
+        }
     }
 
     void LateUpdate()
@@ -81,18 +91,43 @@ public class PlayerController : MonoBehaviour
         mouseDelta = context.ReadValue<Vector2>();
     }
 
-    public void OnJump(InputAction.CallbackContext context)
+    // public void OnJump(InputAction.CallbackContext context)
+    // {
+    //     Debug.Log("IsGrounded(): " + IsGrounded());
+
+    //     //점프 차징(IsGrounded(ture)) >> 스태미나 닳는다 >> 점프 키 뗌 >> 점프(닳은 스태미나만큼 점프력 상승)
+    //     if (context.phase == InputActionPhase.Started && IsGrounded())
+    //     {
+    //         Debug.Log("점프 Started");
+    //     }
+    //     else if (context.phase == InputActionPhase.Performed)
+    //     {
+    //         Debug.Log("점프 Performed");
+    //     }
+    //     else if (context.phase == InputActionPhase.Canceled)
+    //     {
+    //         Debug.Log("점프 Canceled");
+    //     }
+    // }
+
+    public void OnChargeJump(InputAction.CallbackContext context)
     {
-        Debug.Log("IsGrounded(): " + IsGrounded());
-        
-        if (CharacterManager.Instance.Player.condition.UseStamina(useStamina))
+        Debug.Log("점프 시스템 on");
+        if (context.phase == InputActionPhase.Started) // 버튼 누름
         {
-            if (context.phase == InputActionPhase.Started && IsGrounded())
-            {
-                _rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse); //Impulse: 순간적인 힘을 주는
-            }
+            Debug.Log("차징 중...");
+            isCharging = true;
+        }
+        else if (context.phase == InputActionPhase.Canceled && isCharging) // 버튼을 떼면 실행
+        {
+            Debug.Log("점프 파워!");
+            _rigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            isCharging = false;
+            maxJumpPower = 80f;
+            jumpPower = maxJumpPower;
         }
     }
+
 
     bool IsGrounded()
     {

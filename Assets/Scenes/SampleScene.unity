@@ -457,8 +457,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  useStamina: 10
   jumpPower: 80
-  useStamina: 0
+  maxJumpPower: 200
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -507,10 +508,6 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 3df898ad-b056-4230-9fea-639709d7165f
-    m_ActionName: PlayerAction/Move
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 410821027}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
@@ -546,7 +543,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 410821027}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnJump
+        m_MethodName: OnChargeJump
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

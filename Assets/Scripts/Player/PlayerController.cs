@@ -8,13 +8,13 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float useStamina;
-    [SerializeField] private float jumpPower = 80f;
-    [SerializeField] private float maxJumpPower = 80f;
+    [SerializeField] private float jumpPower;
+    [SerializeField] private float maxJumpPower;
     public float fallingSpeed;
     private bool isCharging = false;
     
     private Vector2 curMovementInput;
-    private Rigidbody _rigidbody;
+    public Rigidbody _rigidbody;
     public LayerMask groundLayerMask;
 
     [Header("Look")]
@@ -43,6 +43,11 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate() //물리연산, 움직임을 호출하는 경우
     {
         Move();
+
+        if (!IsGrounded())
+        {
+            fallingSpeed = _rigidbody.velocity.y;
+        }
         Charging();
     }
 
@@ -54,9 +59,10 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
-        dir *= moveSpeed;
-        dir.y = _rigidbody.velocity.y + Physics.gravity.y * Time.deltaTime;
+        Vector3 dir = (transform.forward * curMovementInput.y
+             + transform.right * curMovementInput.x).normalized * moveSpeed;
+        
+        dir.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = dir;
     }
@@ -111,16 +117,12 @@ public class PlayerController : MonoBehaviour
 
     public void OnChargeJump(InputAction.CallbackContext context)
     {
-        Debug.Log("점프 시스템 on");
         if (context.phase == InputActionPhase.Started && IsGrounded()) // 버튼 누름
         {
-            Debug.Log("차징 중...");
             isCharging = true;
-            jumpPower = 80f;
         }
         else if (context.phase == InputActionPhase.Canceled && isCharging) // 버튼을 떼면 실행
         {
-            Debug.Log("점프 파워!");
             _rigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             isCharging = false;
             jumpPower = 80f;
@@ -151,8 +153,8 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < rays.Length; i++)
         {
-            Debug.DrawRay(rays[i].origin, rays[i].direction * 0.5f, Color.red);
-            if (Physics.Raycast(rays[i], 0.5f, groundLayerMask))
+            // Debug.DrawRay(rays[i].origin, rays[i].direction * 0.5f, Color.red);
+            if (Physics.Raycast(rays[i], 1.02f, groundLayerMask))
             {
                 return true;
             }

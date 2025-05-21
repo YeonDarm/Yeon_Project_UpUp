@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed;
+    public float moveSpeed;
     [SerializeField] private float useStamina = 1f;
     [SerializeField] private float jumpPower;
     [SerializeField] private float maxJumpPower;

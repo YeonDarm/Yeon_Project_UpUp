@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float useStamina;
+    [SerializeField] private float useStamina = 1f;
     [SerializeField] private float jumpPower;
     [SerializeField] private float maxJumpPower;
     public float fallingSpeed;
@@ -117,6 +117,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnChargeJump(InputAction.CallbackContext context)
     {
+        
+        
         if (context.phase == InputActionPhase.Started && IsGrounded()) // 버튼 누름
         {
             isCharging = true;
@@ -128,16 +130,21 @@ public class PlayerController : MonoBehaviour
             jumpPower = 80f;
             maxJumpPower = jumpPower;
         }
+        
     }
 
     void Charging()
     {
-        if (isCharging)
+        if (isCharging && CharacterManager.Instance.Player.condition.UseStamina(useStamina))
         {
             maxJumpPower += Time.deltaTime * 100f;
             maxJumpPower = Mathf.Clamp(maxJumpPower, 0f, 200f);
             jumpPower = maxJumpPower;
         }
+        // else if (!CharacterManager.Instance.Player.condition.UseStamina(useStamina))
+        // {
+        //     isCharging = false;
+        // }
     }
 
 

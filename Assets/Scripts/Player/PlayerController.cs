@@ -43,11 +43,6 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate() //물리연산, 움직임을 호출하는 경우
     {
         Move();
-
-        if (!IsGrounded())
-        {
-            fallingSpeed = _rigidbody.velocity.y;
-        }
         Charging();
     }
 
@@ -86,9 +81,6 @@ public class PlayerController : MonoBehaviour
         {
             curMovementInput = Vector2.zero;
         }
-        //Start : 키 입력되는 순간 한번만 작동.
-        // performed: 키가 눌리고 내부 로직이 실행되고 나서 계속.
-        //canceled: 취소됐을 때.
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -96,29 +88,9 @@ public class PlayerController : MonoBehaviour
         mouseDelta = context.ReadValue<Vector2>();
     }
 
-    // public void OnJump(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("IsGrounded(): " + IsGrounded());
-
-    //     //점프 차징(IsGrounded(ture)) >> 스태미나 닳는다 >> 점프 키 뗌 >> 점프(닳은 스태미나만큼 점프력 상승)
-    //     if (context.phase == InputActionPhase.Started && IsGrounded())
-    //     {
-    //         Debug.Log("점프 Started");
-    //     }
-    //     else if (context.phase == InputActionPhase.Performed)
-    //     {
-    //         Debug.Log("점프 Performed");
-    //     }
-    //     else if (context.phase == InputActionPhase.Canceled)
-    //     {
-    //         Debug.Log("점프 Canceled");
-    //     }
-    // }
 
     public void OnChargeJump(InputAction.CallbackContext context)
-    {
-        
-        
+    { 
         if (context.phase == InputActionPhase.Started && IsGrounded()) // 버튼 누름
         {
             isCharging = true;
@@ -130,7 +102,6 @@ public class PlayerController : MonoBehaviour
             jumpPower = 80f;
             maxJumpPower = jumpPower;
         }
-        
     }
 
     void Charging()
@@ -141,10 +112,6 @@ public class PlayerController : MonoBehaviour
             maxJumpPower = Mathf.Clamp(maxJumpPower, 0f, 200f);
             jumpPower = maxJumpPower;
         }
-        // else if (!CharacterManager.Instance.Player.condition.UseStamina(useStamina))
-        // {
-        //     isCharging = false;
-        // }
     }
 
 
@@ -160,12 +127,14 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < rays.Length; i++)
         {
-            // Debug.DrawRay(rays[i].origin, rays[i].direction * 0.5f, Color.red);
-            if (Physics.Raycast(rays[i], 1.02f, groundLayerMask))
+            Debug.DrawRay(rays[i].origin, rays[i].direction * 0.56f, Color.red);
+            if (Physics.Raycast(rays[i], 0.56f, groundLayerMask))
             {
+                Debug.Log("IsGrounded : 반환값 true");
                 return true;
             }
         }
+        Debug.Log("IsGrounded : 반환값 false");
         return false;
     }
 }

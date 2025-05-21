@@ -24,6 +24,7 @@ public class JumpForce : MonoBehaviour
 
     void AddJumpForce()
     {
+        Debug.Log("점프 파워: " + jumpPlatePower);
         rigid.AddForce(Vector3.up * jumpPlatePower, ForceMode.Impulse);
     }
 }

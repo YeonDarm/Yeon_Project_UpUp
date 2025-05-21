@@ -8,13 +8,14 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
     [SerializeField] private float useStamina = 1f;
-    public float jumpPower;
+    [SerializeField] private float jumpPower;
     [SerializeField] private float maxJumpPower;
     public float fallingSpeed;
     private bool isCharging = false;
     
     private Vector2 curMovementInput;
     public Rigidbody _rigidbody;
+    public Animator anim;
     public LayerMask groundLayerMask;
 
     [Header("Look")]
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     void Start()
@@ -73,6 +75,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        anim.SetTrigger("IsMove");
+
         if (context.phase == InputActionPhase.Performed)
         {
             curMovementInput = context.ReadValue<Vector2>();
@@ -130,11 +134,9 @@ public class PlayerController : MonoBehaviour
             Debug.DrawRay(rays[i].origin, rays[i].direction * 0.56f, Color.red);
             if (Physics.Raycast(rays[i], 0.56f, groundLayerMask))
             {
-                Debug.Log("IsGrounded : 반환값 true");
                 return true;
             }
         }
-        Debug.Log("IsGrounded : 반환값 false");
         return false;
     }
 }

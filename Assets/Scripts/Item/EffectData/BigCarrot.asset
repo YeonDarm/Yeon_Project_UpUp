@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0408e21ef8d9b4f8ff1e4a099e123a, type: 3}
   m_Name: BigCarrot
   m_EditorClassIdentifier: 
-  itemName: 
-  duration: 0
-  speedBoost: 0
-  jumpBoost: 0
+  itemName: "\uCEE4\uB2E4\uB780 \uB2F9\uADFC"
+  duration: 30
+  speedBoost: 2

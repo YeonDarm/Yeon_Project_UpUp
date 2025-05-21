@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
     [SerializeField] private float useStamina = 1f;
-    [SerializeField] private float jumpPower;
+    public float jumpPower;
     [SerializeField] private float maxJumpPower;
     public float fallingSpeed;
     private bool isCharging = false;
@@ -99,8 +99,8 @@ public class PlayerController : MonoBehaviour
         {
             _rigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             isCharging = false;
-            jumpPower = 80f;
-            maxJumpPower = jumpPower;
+            maxJumpPower = 80f;
+            jumpPower = maxJumpPower;
         }
     }
 

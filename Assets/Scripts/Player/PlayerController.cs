@@ -8,9 +8,8 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
     [SerializeField] private float useStamina = 1f;
-    [SerializeField] private float jumpPower;
-    [SerializeField] private float maxJumpPower;
-    public float fallingSpeed;
+    public float jumpPower;
+    public float maxJumpPower;
     private bool isCharging = false;
     
     private Vector2 curMovementInput;
@@ -103,8 +102,8 @@ public class PlayerController : MonoBehaviour
         {
             _rigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             isCharging = false;
-            maxJumpPower = 80f;
-            jumpPower = maxJumpPower;
+            jumpPower = 80f;
+            maxJumpPower = jumpPower;
         }
     }
 
@@ -113,8 +112,8 @@ public class PlayerController : MonoBehaviour
         if (isCharging && CharacterManager.Instance.Player.condition.UseStamina(useStamina))
         {
             maxJumpPower += Time.deltaTime * 100f;
-            maxJumpPower = Mathf.Clamp(maxJumpPower, 0f, 200f);
-            jumpPower = maxJumpPower;
+            jumpPower = Mathf.Clamp(maxJumpPower, 0f, 200f);
+            // jumpPower = maxJumpPower;
         }
     }
 

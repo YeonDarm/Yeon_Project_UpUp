@@ -10,11 +10,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float useStamina = 1f;
     public float jumpPower;
     public float maxJumpPower;
+    public float originJumpPower;
     private bool isCharging = false;
     
     private Vector2 curMovementInput;
     public Rigidbody _rigidbody;
     public Animator anim;
+
     public LayerMask groundLayerMask;
 
     [Header("Look")]
@@ -45,6 +47,10 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         Charging();
+        if (Mathf.Abs(_rigidbody.velocity.y) < 0.1f && !IsGrounded())
+        {
+            Debug.Log("최고점 좌표: " + transform.position.y);
+        }
     }
 
     void LateUpdate()
@@ -74,14 +80,28 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        anim.SetTrigger("IsMove");
+        // bool isMoving = context.ReadValue<Vector2>().magnitude > 0.1f;
+
+        // if (IsGrounded())
+        // {
+        //     bool isMoving = context.ReadValue<Vector2>().magnitude > 0.1f;
+        //     anim.SetBool("IsMoving", isMoving);
+        // }
+        // else
+        // {
+        //     anim.StopPlayback();
+        // }
 
         if (context.phase == InputActionPhase.Performed)
         {
+            anim.SetBool("Idle", false);
+            anim.SetTrigger("IsMove");
             curMovementInput = context.ReadValue<Vector2>();
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
+            // anim.ResetTrigger("IsMove");
+            anim.SetBool("Idle", true);
             curMovementInput = Vector2.zero;
         }
     }
@@ -93,17 +113,18 @@ public class PlayerController : MonoBehaviour
 
 
     public void OnChargeJump(InputAction.CallbackContext context)
-    { 
-        if (context.phase == InputActionPhase.Started && IsGrounded()) // 버튼 누름
+    {
+        if (context.phase == InputActionPhase.Started) // 버튼 누름
         {
+            originJumpPower = jumpPower;
             isCharging = true;
         }
         else if (context.phase == InputActionPhase.Canceled && isCharging) // 버튼을 떼면 실행
         {
-            _rigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            _rigidbody.AddForce(Vector3.up * maxJumpPower, ForceMode.Impulse);
+            maxJumpPower = originJumpPower;
+            jumpPower = originJumpPower;
             isCharging = false;
-            jumpPower = 80f;
-            maxJumpPower = jumpPower;
         }
     }
 
@@ -111,9 +132,9 @@ public class PlayerController : MonoBehaviour
     {
         if (isCharging && CharacterManager.Instance.Player.condition.UseStamina(useStamina))
         {
-            maxJumpPower += Time.deltaTime * 100f;
-            jumpPower = Mathf.Clamp(maxJumpPower, 0f, 200f);
-            // jumpPower = maxJumpPower;
+            jumpPower += Time.deltaTime * 100f;
+            jumpPower = Mathf.Clamp(jumpPower, 80f, 200f);
+            maxJumpPower = jumpPower;
         }
     }
 
